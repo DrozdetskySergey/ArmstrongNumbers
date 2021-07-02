@@ -2,7 +2,7 @@ package ru.novosibirsk.drozdetsky21.armstrongnumbers;
 
 import java.util.*;
 
-public class Main {
+public class ArmstrongNumbers {
     private static final long[][] digitsExponentiationTable = new long[11][20]; // digitsExponentiationTable[i][j] = Math.pow(i, j)
     private static final int[] digitsCount = new int[10];
     private static long numberWithAscendingDigits; // examples: "123", "1122225669"; examples of increments: 13 -> 14 .. 128 -> 129, 129 -> 133, 133 -> 134 ...
@@ -61,24 +61,24 @@ public class Main {
         return previousDigit;
     }
 
-    private static long getArmstrongNumberOrZero(long armstrongNumberCandidate, int additionalZerosCount) {
-        int numberLength = Main.numberLength + additionalZerosCount;
-        long number = armstrongNumberCandidate * digitsExponentiationTable[10][additionalZerosCount];
+    private static long getArmstrongNumberOrZero(long inputNumber, int additionalZerosCount) {
+        int numberLengthWithAdditionalZeros = numberLength + additionalZerosCount;
+        long digitDonor = inputNumber * digitsExponentiationTable[10][additionalZerosCount];
         Arrays.fill(digitsCount, 0);
         long multipliedDigitsSum = 0;
 
-        while (number > 0) {
-            int lastDigitInNumber = (int) (number % 10);
-            number /= 10;
+        while (digitDonor > 0) {
+            int lastDigitInNumber = (int) (digitDonor % 10);
+            digitDonor /= 10;
             digitsCount[lastDigitInNumber]++;
-            multipliedDigitsSum += digitsExponentiationTable[lastDigitInNumber][numberLength];
+            multipliedDigitsSum += digitsExponentiationTable[lastDigitInNumber][numberLengthWithAdditionalZeros];
         }
 
-        long number2 = multipliedDigitsSum;
+        long armstrongNumberCandidate = multipliedDigitsSum;
 
-        while (number2 > 0) {
-            int lastDigitInNumber = (int) (number2 % 10);
-            number2 /= 10;
+        while (multipliedDigitsSum > 0) {
+            int lastDigitInNumber = (int) (multipliedDigitsSum % 10);
+            multipliedDigitsSum /= 10;
             digitsCount[lastDigitInNumber]--;
         }
 
@@ -88,7 +88,7 @@ public class Main {
             }
         }
 
-        return multipliedDigitsSum; // armstrongNumberCandidate == 135 -> multipliedDigitsSum = (5 * 5 * 5) + (3 * 3 * 3) + (1 * 1 * 1) = 153 this is Armstrong number
+        return armstrongNumberCandidate; // inputNumber == 135 -> multipliedDigitsSum = (5 * 5 * 5) + (3 * 3 * 3) + (1 * 1 * 1) = 153 this is Armstrong number
     }
 
     public static void main(String[] args) {
