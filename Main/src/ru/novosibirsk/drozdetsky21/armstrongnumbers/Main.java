@@ -41,8 +41,8 @@ public class Main {
         return numbersList;
     }
 
-    private static long getDigitAfterIncrementInSpecifiedPlace(int digitPlaceFromEnd) {
-        long coveringTailMask = digitsExponentiationTable[10][digitPlaceFromEnd - 1];
+    private static long getDigitAfterIncrementInSpecifiedPlace(int incrementDigitFromEnd) {
+        long coveringTailMask = digitsExponentiationTable[10][incrementDigitFromEnd - 1];
         long digit = numberWithAscendingDigits / coveringTailMask % 10;
 
         if (digit < 9) {
@@ -51,19 +51,19 @@ public class Main {
             return digit + 1;
         }
 
-        if (digitPlaceFromEnd + 1 > numberLength) {
-            numberLength = digitPlaceFromEnd + 1;
+        if (incrementDigitFromEnd + 1 > numberLength) {
+            numberLength = incrementDigitFromEnd + 1;
         }
 
-        long previousDigit = getDigitAfterIncrementInSpecifiedPlace(digitPlaceFromEnd + 1);
+        long previousDigit = getDigitAfterIncrementInSpecifiedPlace(incrementDigitFromEnd + 1);
         numberWithAscendingDigits -= (9 - previousDigit) * coveringTailMask;
 
         return previousDigit;
     }
 
-    private static long getArmstrongNumberOrZero(long inputNumber, int additionalZerosCount) {
+    private static long getArmstrongNumberOrZero(long armstrongNumberCandidate, int additionalZerosCount) {
         int numberLength = Main.numberLength + additionalZerosCount;
-        long number = inputNumber * digitsExponentiationTable[10][additionalZerosCount];
+        long number = armstrongNumberCandidate * digitsExponentiationTable[10][additionalZerosCount];
         Arrays.fill(digitsCount, 0);
         long multipliedDigitsSum = 0;
 
@@ -88,7 +88,7 @@ public class Main {
             }
         }
 
-        return multipliedDigitsSum; // inputNumber == 135 -> multipliedDigitsSum = (5 * 5 * 5) + (3 * 3 * 3) + (1 * 1 * 1) = 153 this is Armstrong number
+        return multipliedDigitsSum; // armstrongNumberCandidate == 135 -> multipliedDigitsSum = (5 * 5 * 5) + (3 * 3 * 3) + (1 * 1 * 1) = 153 this is Armstrong number
     }
 
     public static void main(String[] args) {
